@@ -1,2 +1,4 @@
 # FUD-Shellcode-injector
-Proof of concept for a windows shellcode injector that bypasses both AV and EDR written in C++
+Proof of concept Windows shellcode injector to bypass AV and EDR
+
+Uses indirect syscalls to appear as an application creating and interacting with a kernel timer
