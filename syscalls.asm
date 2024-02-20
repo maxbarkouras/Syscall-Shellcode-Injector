@@ -1,4 +1,4 @@
-#define all variables and declare as external 
+;define all variables and declare as external 
 EXTERN CSSN:DWORD                
 EXTERN OPSSN:DWORD          
 EXTERN CTSSN:DWORD       
