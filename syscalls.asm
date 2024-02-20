@@ -14,9 +14,9 @@ EXTERN NtCancelTimerSyscall:QWORD
 
 .CODE
 
-#define syscalls for NTDLL calls
+;define syscalls for NTDLL calls
 
-#NtOpenProcess syscall, making call through NtCreateTimer
+;NtOpenProcess syscall, making call through NtCreateTimer
 OP PROC
 		mov r10, rcx
 		mov eax, 26h
@@ -24,7 +24,7 @@ OP PROC
 		ret
 OP ENDP
 
-#NtAllocateVirtualMemory syscall, making call through NtOpenTimer
+;NtAllocateVirtualMemory syscall, making call through NtOpenTimer
 AVM PROC
 		mov r10, rcx
 		mov eax, 18h
@@ -32,7 +32,7 @@ AVM PROC
 		ret
 AVM ENDP
 
-#NtWriteVirtualMemory syscall, making call through NtSetTimer
+;NtWriteVirtualMemory syscall, making call through NtSetTimer
 WVM PROC
 		mov r10, rcx
 		mov eax, 3ah
@@ -40,7 +40,7 @@ WVM PROC
 		ret
 WVM ENDP
 
-#NtCreateThread syscall, making call through NtQueryTimer
+;NtCreateThread syscall, making call through NtQueryTimer
 CT PROC
 		mov r10, rcx
 		mov eax, 0c7h
@@ -48,7 +48,7 @@ CT PROC
 		ret
 CT ENDP
 
-#NtWaitForSingleObject syscall, making call through NtQueryTimer
+;NtWaitForSingleObject syscall, making call through NtQueryTimer
 WFSO PROC
 		mov r10, rcx
 		mov eax, 04h
@@ -56,7 +56,7 @@ WFSO PROC
 		ret
 WFSO ENDP
 
-#NtClose syscall, making call through NtCancelTimer
+;NtClose syscall, making call through NtCancelTimer
 C PROC
 		mov r10, rcx
 		mov eax, 0fh
