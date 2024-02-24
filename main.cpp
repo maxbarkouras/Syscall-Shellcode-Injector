@@ -21,7 +21,7 @@ extern "C" {
 //define XOR encrypted shellcode
 unsigned char shellcode[] = "XOR ENCRYPTED PAYLOAD HERE;
 
-//define XOR encrypted string NTDLL
+//define XOR encrypted string "NTDLL"
 char NDLCRY[] = "\x14\x35\x37\x28\x3b";
 
 int main(int argc, char* argv[]) {
