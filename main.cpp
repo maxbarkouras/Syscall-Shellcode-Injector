@@ -19,7 +19,7 @@ extern "C" {
 }
 
 //define XOR encrypted shellcode
-unsigned char shellcode[] = "XOR ENCRYPTED PAYLOAD HERE;
+unsigned char shellcode[] = "XOR ENCRYPTED PAYLOAD HERE";
 
 //define XOR encrypted string "NTDLL"
 char NDLCRY[] = "\x14\x35\x37\x28\x3b";
