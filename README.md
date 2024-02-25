@@ -37,13 +37,13 @@ Follow these simple steps to setup your environment and compile the injector:
   
 2. Check "masm" box and click Okay (see below)
 
-  ![image](https://github.com/maxbarkouras/Syscall-Shellcode-Injector/assets/40187297/50cb96f4-3304-4d5f-ba76-9c5f592eace0)
+   ![image](https://github.com/maxbarkouras/Syscall-Shellcode-Injector/assets/40187297/50cb96f4-3304-4d5f-ba76-9c5f592eace0)
 
 3. Right click Syscalls.asm file in Solutions Explorer and click Properties
    
 4. Set "Excluded From Build" to No, "Content" to Yes, and "Item Type" to Microsoft Macro Assembler (see below)
 
-  ![image](https://github.com/maxbarkouras/Syscall-Shellcode-Injector/assets/40187297/bb34f9d9-1187-46c2-8e1a-2f38479b1435)
+   ![image](https://github.com/maxbarkouras/Syscall-Shellcode-Injector/assets/40187297/bb34f9d9-1187-46c2-8e1a-2f38479b1435)
 
 5. Ready to Compile!
 
