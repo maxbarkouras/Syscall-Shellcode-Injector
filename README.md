@@ -16,7 +16,7 @@ Follow these simple steps to setup your environment and compile the injector:
 ### Prerequisites
 
 1. As of right now, syscalls are hardcoded and the end user must be running Windows 11 23H2
-2. Shellcode must be XOR encrypted BEFORE you paste into code, or comment out decryption call
+2. Shellcode must be XOR encrypted BEFORE you paste into code, or comment out decryption call (line 33)
 3. Visual Studio or another way to compile C++ link with assembly (see compiling below for more details)
 
 ### Installation
