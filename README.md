@@ -27,7 +27,9 @@ Follow these simple steps to setup your environment and compile the injector:
 
 3. Open main.cpp and syscalls.asm as source files and wonka.h as a header file
    
-4. Compile!
+4. Make changes to necessary components (shellcode, XOR key)
+
+5. Complile!
 
 ### Compiling
 
@@ -43,8 +45,8 @@ Follow these simple steps to setup your environment and compile the injector:
 
     ![image](https://github.com/maxbarkouras/Syscall-Shellcode-Injector/assets/40187297/bb34f9d9-1187-46c2-8e1a-2f38479b1435)
 
-5. Done!
+5. Ready to Compile!
 
 ---
 
-Make Changes and Compile!
+Done!
