@@ -29,7 +29,7 @@ Follow these simple steps to setup your environment and compile the injector:
    
 4. Make changes to necessary components (shellcode, XOR key)
 
-5. Complile!
+5. Follow compilation steps
 
 ### Compiling
 
