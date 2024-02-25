@@ -1,8 +1,3 @@
-
-
-Shellcode must be XOR encrypted or you need to remove XOR decryption method
-
-
 # Syscall-Shellcode-Injector
 
 Proof of concept Windows shellcode injector to bypass AV and EDR by indirectly calling syscalls. Attempts to appear as a clock-like application creating and interacting with kernel timer syscall stubs, while writing and executing your shellcode. Currently uses hardcoded syscalls for Windows 11 23H2 ONLY, plan on implementing syswhispers for compatibility in the future.
