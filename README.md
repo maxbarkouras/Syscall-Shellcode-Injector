@@ -5,6 +5,7 @@ Proof of concept Windows shellcode injector to bypass AV and EDR by directly/ind
 
 ## Features
 
+- Offers support for direct and indirect shellcode injection to support various usecases 
 - Decrypts XOR shellcodes and injects into running process with passed PID
 - Use of Windows kernel timer call locations to syscalls through them (NtCreateTimer, NtOpenTimer, NtSetTimer, NtQueryTimer, NtCancelTimer)
 - Built with Windows API and standard C++ libraries
@@ -20,11 +21,12 @@ Follow these simple steps to setup your environment and compile the injector:
 
 ### Installation
 
-1. Clone or download the repository to your local machine:
+1. Clone or download the repository to your local machine
 
 2. Create a new C++ Visual Studio project in the directory
 
-3. Open main.cpp and syscalls.asm as source files and wonka.h as a header file
+3. Open main.cpp and **indirect.asm _OR_ direct.asm** as source files and wonka.h as a header file
+   --> indirect.asm for indirect syscalls and direct.asm for direct
    
 4. Make changes to necessary components (shellcode, XOR key)
 
