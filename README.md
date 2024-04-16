@@ -1,6 +1,6 @@
 # Syscall-Shellcode-Injector
 
-Proof of concept Windows shellcode injector to bypass AV and EDR by indirectly calling syscalls. Attempts to appear as a clock-like application creating and interacting with kernel timer syscall stubs, while writing and executing your shellcode. Currently uses assmebly partially created with Syswhispers; due to the age of the project I had to add the last batch of Windows installations myself to make it compatible with all modern Windows versions -- Starting from Windows 10 1507 to the most recent Windows 11 23H2.
+Proof of concept Windows shellcode injector to bypass AV and EDR by directly/indirectly calling syscalls. If indirectly, the code attempts to appear as a clock-like application creating and interacting with kernel timer syscall stubs while writing and executing your shellcode. Currently uses assmebly partially created with the help of [Syswhispers](https://github.com/jthuraisamy/SysWhispers); due to the age of the project I had to add the last batch of Windows installations myself to make it compatible with all modern Windows versions -- Starting from Windows 10 1507 to the most recent Windows 11 23H2.
 
 
 ## Features
