@@ -25,7 +25,7 @@ Follow these simple steps to setup your environment and compile the injector:
 
 2. Create a new C++ Visual Studio project in the directory
 
-3. Open main.cpp and **indirect.asm _OR_ direct.asm** as source files and wonka.h as a header file
+3. Open main.cpp and **indirect.asm _OR_ direct.asm** as source files and wonka.h as a header file  
    --> indirect.asm for indirect syscalls and direct.asm for direct
    
 4. Make changes to necessary components (shellcode, XOR key)
