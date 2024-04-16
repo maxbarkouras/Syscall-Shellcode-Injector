@@ -1,12 +1,12 @@
 # Syscall-Shellcode-Injector
 
-Proof of concept Windows shellcode injector to bypass AV and EDR by indirectly calling syscalls. Attempts to appear as a clock-like application creating and interacting with kernel timer syscall stubs, while writing and executing your shellcode. Currently uses hardcoded syscalls for Windows 11 23H2 ONLY, plan on implementing syswhispers for compatibility in the future.
+Proof of concept Windows shellcode injector to bypass AV and EDR by indirectly calling syscalls. Attempts to appear as a clock-like application creating and interacting with kernel timer syscall stubs, while writing and executing your shellcode. Currently uses assmebly partially created with Syswhispers; due to the age of the project I had to add the last batch of Windows installations myself to make it compatible with all modern Windows versions -- Starting from Windows 10 1507 to the most recent Windows 11 23H2.
 
 
 ## Features
 
 - Decrypts XOR shellcodes and injects into running process with passed PID
-- Finds timer interaction call locations through NtDLL and makes syscalls through them (NtCreateTimer, NtOpenTimer, NtSetTimer, NtQueryTimer, NtCancelTimer)
+- Use of Windows kernel timer call locations to syscalls through them (NtCreateTimer, NtOpenTimer, NtSetTimer, NtQueryTimer, NtCancelTimer)
 - Built with Windows API and standard C++ libraries
 
 ## Getting Started
@@ -15,9 +15,8 @@ Follow these simple steps to setup your environment and compile the injector:
 
 ### Prerequisites
 
-1. As of right now, syscalls are hardcoded and the end user must be running Windows 11 23H2
-2. Shellcode must be XOR encrypted BEFORE you paste into code, or comment out decryption call (line 33)
-3. Visual Studio or another way to compile C++ link with assembly (see compiling below for more details)
+1. Shellcode must be XOR encrypted BEFORE you paste into code, or comment out decryption call (line 31)
+2. Visual Studio or another way to compile and link C++ with assembly (see compiling below for more details)
 
 ### Installation
 
