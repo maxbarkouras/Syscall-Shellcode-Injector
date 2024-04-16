@@ -1,14 +1,14 @@
 # Syscall-Shellcode-Injector
 
-Proof of concept Windows shellcode injector to bypass AV and EDR by directly/indirectly calling syscalls. If indirectly, the code attempts to appear as a clock-like application creating and interacting with kernel timer syscall stubs while writing and executing your shellcode. Currently uses assmebly partially created with the help of [Syswhispers](https://github.com/jthuraisamy/SysWhispers); due to the age of the project I had to add the last batch of Windows installations myself to make it compatible with all modern Windows versions -- Starting from Windows 10 1507 to the most recent Windows 11 23H2.
+Proof of concept Windows shellcode injector to bypass AV and EDR. Currently uses assmebly partially created with the help of [Syswhispers](https://github.com/jthuraisamy/SysWhispers) to load system call numbers and make calls. Due to the outdated nature of the project, I had to add the last batch of Windows installations myself to make it compatible with all modern Windows versions -- Starting from the first release of Windows 10 (1507) to the most recent release of Windows 11 (23H2).
 
 
 ## Features
 
-- Offers support for direct and indirect shellcode injection to support various usecases 
 - Decrypts XOR shellcodes and injects into running process with passed PID
 - Use of Windows kernel timer call locations to syscalls through them (NtCreateTimer, NtOpenTimer, NtSetTimer, NtQueryTimer, NtCancelTimer)
-- Built with Windows API and standard C++ libraries
+- Makes syscalls directly through assembly, avoiding the use of NTdll or Windows API to make calls   
+- Built with x64 assmebly, Windows API, and standard C++ libraries
 
 ## Getting Started
 
@@ -25,8 +25,7 @@ Follow these simple steps to setup your environment and compile the injector:
 
 2. Create a new C++ Visual Studio project in the directory
 
-3. Open main.cpp and **indirect.asm _OR_ direct.asm** as source files and wonka.h as a header file  
-      --> use indirect.asm for indirect syscalls and direct.asm for direct syscalls
+3. Open main.cpp and syscalls.asm as source files and wonka.h as a header file  
    
 4. Make changes to necessary components (shellcode, XOR key)
 
@@ -40,7 +39,7 @@ Follow these simple steps to setup your environment and compile the injector:
 
    ![image](https://github.com/maxbarkouras/Syscall-Shellcode-Injector/assets/40187297/50cb96f4-3304-4d5f-ba76-9c5f592eace0)
 
-3. Right click .asm file in Solutions Explorer and click Properties
+3. Right click syscalls.asm file in Solutions Explorer and click Properties
    
 4. Set "Excluded From Build" to No, "Content" to Yes, and "Item Type" to Microsoft Macro Assembler (see below)
 
