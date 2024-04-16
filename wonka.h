@@ -106,24 +106,6 @@ EXTERN_C NTSTATUS WFSO(
 EXTERN_C NTSTATUS C(
 	IN HANDLE Handle);
 
-EXTERN_C NTSTATUS NtCreateTimer(
-	OUT PHANDLE TimerHandle,
-	IN ACCESS_MASK DesiredAccess,
-	IN POBJECT_ATTRIBUTES ObjectAttributes OPTIONAL,
-	IN TIMER_TYPE TimerType);
-
-EXTERN_C NTSTATUS NtOpenTimer(
-	OUT PHANDLE TimerHandle,
-	IN ACCESS_MASK DesiredAccess,
-	IN POBJECT_ATTRIBUTES ObjectAttributes);
-
-EXTERN_C NTSTATUS NtQueryTimer(
-	IN HANDLE TimerHandle,
-	IN TIMER_INFORMATION_CLASS TimerInformationClass,
-	OUT PVOID TimerInformation,
-	IN ULONG TimerInformationLength,
-	OUT PULONG ReturnLength OPTIONAL);
-
 EXTERN_C NTSTATUS OP(
 	OUT PHANDLE ProcessHandle,
 	IN ACCESS_MASK DesiredAccess,
@@ -137,19 +119,6 @@ EXTERN_C NTSTATUS AVM(
 	IN OUT PSIZE_T RegionSize,
 	IN ULONG AllocationType,
 	IN ULONG Protect);
-
-EXTERN_C NTSTATUS NtCancelTimer(
-	IN HANDLE TimerHandle,
-	OUT PBOOLEAN CurrentState OPTIONAL);
-
-EXTERN_C NTSTATUS NtSetTimer(
-	IN HANDLE TimerHandle,
-	IN PLARGE_INTEGER DueTime,
-	IN PTIMER_APC_ROUTINE TimerApcRoutine OPTIONAL,
-	IN PVOID TimerContext OPTIONAL,
-	IN BOOLEAN ResumeTimer,
-	IN LONG Period OPTIONAL,
-	OUT PBOOLEAN PreviousState OPTIONAL);
 
 EXTERN_C NTSTATUS WVM(
 	IN HANDLE ProcessHandle,
