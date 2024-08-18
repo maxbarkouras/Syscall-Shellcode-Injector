@@ -1,4 +1,4 @@
-# Syscall Shellcode Injector
+# Shellcode Injection with Syscalls
 
 Proof of concept Windows shellcode injector to bypass AV and EDR. Currently uses assmebly partially created with the help of [Syswhispers](https://github.com/jthuraisamy/SysWhispers) to load system call numbers and make calls. Due to the outdated nature of the project, I had to add the last batch of Windows installations myself to make it compatible with all modern Windows versions -- Starting from the first release of Windows 10 (1507) to the most recent release of Windows 11 (23H2).
 
